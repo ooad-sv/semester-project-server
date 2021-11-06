@@ -6,8 +6,13 @@ const app = express();
 const port = process.env.PORT;
 
 app.get('/', async (req, res) => {
-  const rows = await db.query('SELECT 1');
-  console.log({rows});
+  try {
+    const rows = await db.query('SELECT 1');
+    console.log({rows});
+  }
+  catch (error) {
+    console.log(error);
+  }
   res.send('Hello World!');
 })
 
