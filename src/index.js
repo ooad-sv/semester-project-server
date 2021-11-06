@@ -10,11 +10,16 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.get('/', async (req, res) => {
-  res.render('index', {
-    data: 'Hello World!'
-  });
+  res.render('index');
+})
+
+app.post('/', async (req, res) => {
+  console.log(req.body);
+  res.render('index');
 })
 
 app.listen(port, () => {
