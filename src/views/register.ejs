@@ -15,9 +15,11 @@
         <input type="password" class="form-control" id="exampleInputPassword2" name="confirmPassword">
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
-    <% if (typeof (error) != 'undefined' && error != '') { %>
+    <% if (typeof (errors) != 'undefined' && errors.length > 0) { %>
       <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
-        <%= error %>
+        <% for(let i=0; i<errors.length; i++) {%>
+          <div><%= errors[i]%></div>
+        <% } %>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     <% } %>
