@@ -1,4 +1,4 @@
-const env = process.env;
+const { env } = process;
 
 const config = {
   db: {
@@ -6,8 +6,8 @@ const config = {
     ssl: env.DATABASE_SSL === 'false' ? false : { rejectUnauthorized: false },
   },
   auth: {
-    jwtSecretKey: env.JWT_SECRET_KEY
-  }
+    jwtSecretKey: env.JWT_SECRET_KEY,
+  },
 };
 
 module.exports = config;
