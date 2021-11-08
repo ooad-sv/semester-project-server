@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const rows = Person.find(email);
+        const rows = await Person.find(email);
         if (!rows.length) {
             return res.render('person/login', {title: 'Login', errors: ['Person with that email does not exist!'] });
         }
@@ -19,7 +19,8 @@ router.post('/login', async (req, res) => {
         if (!passwordCorrect) {
             return res.render('person/login', {title: 'Login', errors: ['Invalid password!'] });
         } 
-        res.render('person/login', {title: 'Login'});
+        person.token = Person.createToken(person);
+        res.render('person/dashboard', {title: 'Dashboard', person});
     } catch (error) {
         console.error(error);
     }
@@ -42,15 +43,16 @@ router.post('/register',
                 return res.render('person/register', {title: 'Register', errors: errors.array().map(e => e.msg)});
             }
             const person = req.body;
-            const rows = Person.find(person.email);
+            delete person.confirmPassword;
+            const rows = await Person.find(person.email);
             if (rows.length) {
                 return res.render('person/register', {title: 'Register', errors: ['Person with that email already exists!'] });
             }
             person.hashedPassword = await Person.hashPassword(person.password);
             delete person.password;
             await Person.create(person);
-            delete person.hashedPassword;
-            res.render('person/register', {title: 'Register'});
+            person.token = Person.createToken(person);
+            res.render('person/dashboard', {title: 'Dashboard', person});
         } catch (error) {
             console.error(error);
         }
@@ -59,6 +61,10 @@ router.post('/register',
 
 router.get('/dashboard', async (req, res) => {
     res.render('person/dashboard', {title: 'Dashboard'});
+});
+
+router.post('/logout', async (req, res) => {
+    res.redirect('/');
 });
 
 module.exports = router;
