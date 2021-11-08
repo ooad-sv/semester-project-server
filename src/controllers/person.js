@@ -52,7 +52,7 @@ router.post('/register',
             delete person.password;
             await Person.create(person);
             person.token = Person.createToken(person);
-            res.render('person/dashboard', {title: 'Dashboard', person});
+            res.render('person/dashboard', {title: 'Dashboard', user});
         } catch (error) {
             console.error(error);
         }
