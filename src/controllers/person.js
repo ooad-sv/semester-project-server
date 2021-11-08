@@ -7,15 +7,15 @@ router.get('/', async (req, res) => {
     res.render('person/login', {title: 'Login'});
 });
 
-router.post('/', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
         const rows = Person.find(email);
         if (!rows.length) {
-            return res.render('person/login', {title: 'Login', errors: ['User with that email does not exist!'] });
+            return res.render('person/login', {title: 'Login', errors: ['Person with that email does not exist!'] });
         }
-        const user = rows[0];
-        const passwordCorrect = await Person.verifyPassword(password, user.hashedPassword);
+        const person = rows[0];
+        const passwordCorrect = await Person.verifyPassword(password, person.hashedPassword);
         if (!passwordCorrect) {
             return res.render('person/login', {title: 'Login', errors: ['Invalid password!'] });
         } 
@@ -41,18 +41,24 @@ router.post('/register',
             if (!errors.isEmpty()) {
                 return res.render('person/register', {title: 'Register', errors: errors.array().map(e => e.msg)});
             }
-            const { email, password } = req.body;
-            const rows = Person.find(email);
+            const person = req.body;
+            const rows = Person.find(person.email);
             if (rows.length) {
-                return res.render('person/register', {title: 'Register', errors: ['User with that email already exists!'] });
+                return res.render('person/register', {title: 'Register', errors: ['Person with that email already exists!'] });
             }
-            const hashedPassword = await Person.hashPassword(password);
-            await Person.create(email, hashedPassword);
+            person.hashedPassword = await Person.hashPassword(person.password);
+            delete person.password;
+            await Person.create(person);
+            delete person.hashedPassword;
             res.render('person/register', {title: 'Register'});
         } catch (error) {
             console.error(error);
         }
     }
 );
+
+router.get('/dashboard', async (req, res) => {
+    res.render('person/dashboard', {title: 'Dashboard'});
+});
 
 module.exports = router;
