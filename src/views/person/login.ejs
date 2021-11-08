@@ -1,6 +1,7 @@
-<%- include('./partials/header'); %>
 
-<h1 class="my-3">Register</h1>
+<%- include('../partials/header'); %>
+
+<h1 class="my-3">Login</h1>
 <% if (typeof (errors) != 'undefined' && errors.length > 0) { %>
   <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
     <% for(let i=0; i<errors.length; i++) {%>
@@ -9,7 +10,7 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% } %>
-<form action="/register" method="POST">
+<form action="/" method="POST">
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
         <input type="email" required="" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp">
@@ -18,13 +19,8 @@
         <label for="exampleInputPassword1" class="form-label">Password</label>
         <input type="password" required="" class="form-control" id="exampleInputPassword1" name="password">
     </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword2" class="form-label">Confirm password</label>
-        <input type="password" required="" class="form-control" id="exampleInputPassword2" name="confirmPassword">
-    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-<br>
-<a href="/" class="link-primary">I have an account</a>
+<br><a href="/register" class="link-primary">I don't have an account</a>
 
-<%- include('./partials/footer'); %>
+<%- include('../partials/footer'); %>
