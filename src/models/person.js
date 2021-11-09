@@ -34,7 +34,7 @@ class Person {
     return person;
   }
 
-  static async update(personData) {
+  static async updateProfile(personData) {
     const rows = await Person.find(personData.email);
     const newPerson = rows[0];
     if (personData.firstName && personData.firstName.length > 0) {
@@ -56,6 +56,37 @@ class Person {
       [id, firstName, lastName, hashedPassword],
     );
     return newPerson;
+  }
+
+  static async updatePreferences(preferencesData) {
+    const preferences = preferencesData;
+    preferences.intervalNotificationsEnabled = preferences.intervalNotificationsEnabled === 'true';
+    preferences.alarmNotificationsEnabled = preferences.alarmNotificationsEnabled === 'true';
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key in preferences) {
+      if (Object.hasOwnProperty.call(preferences, key)) {
+        const element = preferences[key];
+        if (element === '') {
+          preferences[key] = null;
+        }
+      }
+    }
+    const {
+      id, timeInterval, intervalNotificationsEnabled, alarmNotificationsEnabled,
+      minTemperature, maxTemperature, minPressure, maxPressure,
+      minHumidity, maxHumidity, minAltitude, maxAltitude,
+    } = preferences;
+    await db.query(
+      `UPDATE "Person"
+      SET "intervalNotificationsEnabled" = $2, "timeInterval" = $3, "alarmNotificationsEnabled" = $4,
+      "minTemperature" = $5, "maxTemperature" = $6, "minPressure" = $7, "maxPressure" = $8,
+      "minHumidity" = $9, "maxHumidity" = $10, "minAltitude" = $11, "maxAltitude" = $12
+      WHERE "id" = $1;`,
+      [id, intervalNotificationsEnabled, timeInterval, alarmNotificationsEnabled,
+        minTemperature, maxTemperature, minPressure, maxPressure,
+        minHumidity, maxHumidity, minAltitude, maxAltitude],
+    );
+    return preferences;
   }
 
   static createToken(person) {
