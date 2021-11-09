@@ -146,6 +146,12 @@ router.post('/preferences', Utilities.authenticated,
       const preferencesData = req.body;
       preferencesData.id = req.data.person.id;
       const preferences = await Person.updatePreferences(preferencesData);
+      const { person } = req.data;
+      if (person.arePreferencesSet !== true) {
+        person.arePreferencesSet = true;
+        const token = Person.createToken(person);
+        Utilities.setTokenCookie(res, token);
+      }
       req.data.preferences = preferences;
       req.data.updated = true;
       return res.render('person/preferences', req.data);

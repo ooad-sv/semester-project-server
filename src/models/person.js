@@ -21,6 +21,10 @@ class Person {
     const person = personData;
     person.hashedPassword = await Person.hashPassword(person.password);
     person.isAdmin = false;
+    person.intervalNotificationsEnabled = true;
+    person.alarmNotificationsEnabled = true;
+    person.timeInterval = 4;
+    person.arePreferencesSet = false;
     delete person.password;
     const {
       firstName, lastName, email, hashedPassword, isAdmin,
@@ -60,6 +64,7 @@ class Person {
 
   static async updatePreferences(preferencesData) {
     const preferences = preferencesData;
+    preferences.arePreferencesSet = true;
     preferences.intervalNotificationsEnabled = preferences.intervalNotificationsEnabled === 'true';
     preferences.alarmNotificationsEnabled = preferences.alarmNotificationsEnabled === 'true';
     // eslint-disable-next-line no-restricted-syntax
@@ -78,7 +83,8 @@ class Person {
     } = preferences;
     await db.query(
       `UPDATE "Person"
-      SET "intervalNotificationsEnabled" = $2, "timeInterval" = $3, "alarmNotificationsEnabled" = $4,
+      SET "arePreferencesSet" = true, 
+      "intervalNotificationsEnabled" = $2, "timeInterval" = $3, "alarmNotificationsEnabled" = $4,
       "minTemperature" = $5, "maxTemperature" = $6, "minPressure" = $7, "maxPressure" = $8,
       "minHumidity" = $9, "maxHumidity" = $10, "minAltitude" = $11, "maxAltitude" = $12
       WHERE "id" = $1;`,
@@ -91,31 +97,25 @@ class Person {
 
   static async getPreferences(email) {
     const rows = await Person.find(email);
-    let preferences = rows[0];
-    if (preferences.intervalNotificationsEnabled === null) {
-      const defaultPreferences = {
-        timeInterval: 4,
-        intervalNotificationsEnabled: true,
-        alarmNotificationsEnabled: true,
-        minTemperature: 0.75,
-        maxTemperature: 1.75,
-        minPressure: 0.75,
-        maxPressure: 1.75,
-        minHumidity: 0.75,
-        maxHumidity: 1.75,
-        minAltitude: 0.75,
-        maxAltitude: 1.75,
-      };
-      preferences = defaultPreferences;
+    const preferences = rows[0];
+    if (preferences.arePreferencesSet !== true) {
+      preferences.minTemperature = 0.75;
+      preferences.maxTemperature = 1.75;
+      preferences.minPressure = 0.75;
+      preferences.maxPressure = 1.75;
+      preferences.minHumidity = 0.75;
+      preferences.maxHumidity = 1.75;
+      preferences.minAltitude = 0.75;
+      preferences.maxAltitude = 1.75;
     }
     return preferences;
   }
 
   static createToken(person) {
     const data = (({
-      id, firstName, lastName, email, isAdmin, intervalNotificationsEnabled,
+      id, firstName, lastName, email, isAdmin, arePreferencesSet,
     }) => ({
-      id, firstName, lastName, email, isAdmin, intervalNotificationsEnabled,
+      id, firstName, lastName, email, isAdmin, arePreferencesSet,
     }))(person);
     return jwt.sign(data, config.auth.jwtSecretKey, { expiresIn: '90d' });
   }

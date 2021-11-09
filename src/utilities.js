@@ -43,7 +43,7 @@ class Utilities {
     if (!req.data.isAuthenticated) {
       return res.redirect('/');
     }
-    if (req.data.person.intervalNotificationsEnabled === null && req.path !== '/preferences') {
+    if (req.data.person.arePreferencesSet !== true && req.path !== '/preferences' && req.path !== '/logout') {
       return res.redirect('/preferences');
     }
     return next();
