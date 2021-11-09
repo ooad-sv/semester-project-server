@@ -34,11 +34,35 @@ class Person {
     return person;
   }
 
+  static async update(personData) {
+    const rows = await Person.find(personData.email);
+    const newPerson = rows[0];
+    if (personData.firstName && personData.firstName.length > 0) {
+      newPerson.firstName = personData.firstName;
+    }
+    if (personData.lastName && personData.lastName.length > 0) {
+      newPerson.lastName = personData.lastName;
+    }
+    if (personData.password && personData.password.length > 0) {
+      newPerson.hashedPassword = await Person.hashPassword(personData.password);
+    }
+    const {
+      id, firstName, lastName, hashedPassword,
+    } = newPerson;
+    await db.query(
+      `UPDATE "Person" 
+      SET "firstName" = $2, "lastName" = $3, "hashedPassword" = $4
+      WHERE "id" = $1;`,
+      [id, firstName, lastName, hashedPassword],
+    );
+    return newPerson;
+  }
+
   static createToken(person) {
     const data = (({
-      id, firstName, email, isAdmin,
+      id, firstName, lastName, email, isAdmin,
     }) => ({
-      id, firstName, email, isAdmin,
+      id, firstName, lastName, email, isAdmin,
     }))(person);
     return jwt.sign(data, config.auth.jwtSecretKey, { expiresIn: '90d' });
   }

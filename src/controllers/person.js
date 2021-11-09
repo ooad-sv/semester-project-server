@@ -104,4 +104,31 @@ router.get('/profile', Utilities.authenticated,
     res.render('person/profile', req.data);
   });
 
+router.post('/profile', Utilities.authenticated,
+  body('password', 'Password must be at least 4 characters long!').optional({ checkFalsy: true }).trim().isLength({ min: 4 }),
+  body('confirmPassword', 'Passwords must be the same!').custom(async (confirmPassword, { req }) => {
+    if (req.body.password !== confirmPassword) throw new Error();
+  }),
+  async (req, res) => {
+    req.data.title = 'Profile';
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        req.data.errors = errors.array().map((e) => e.msg);
+        return res.render('person/profile', req.data);
+      }
+      const personData = req.body;
+      personData.email = req.data.person.email;
+      const person = await Person.update(personData);
+      const token = Person.createToken(person);
+      Utilities.setTokenCookie(res, token);
+      return res.redirect('/profile');
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      req.data.errors = ['Something went wrong!'];
+      return res.render('person/profile', req.data);
+    }
+  });
+
 module.exports = router;

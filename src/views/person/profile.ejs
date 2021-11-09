@@ -2,5 +2,38 @@
 <%- include('../partials/header'); %>
 
 <h1 class="my-3">Profile</h1>
+<% if (typeof (errors) != 'undefined' && errors.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+    <% for(let i=0; i<errors.length; i++) {%>
+      <div><%= errors[i]%></div>
+    <% } %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+<form action="/profile" method="POST">
+  <div class="mb-3">
+    <label for="exampleInput1" class="form-label">First name</label>
+    <input type="text" class="form-control" id="exampleInput1" name="firstName" value="<%= person.firstName %>">
+  </div>
+  <div class="mb-3">
+    <label for="exampleInput2" class="form-label">Last name</label>
+    <input type="text" class="form-control" id="exampleInput2" name="lastName" value="<%= person.lastName %>">
+  </div>
+  <div class="mb-3">
+    <label for="exampleInput3" class="form-label">Email</label>
+    <input type="email" disabled="" class="form-control" id="exampleInput3" value="<%= person.email %>">
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword2" class="form-label">Confirm password</label>
+    <input type="password" class="form-control" id="exampleInputPassword2" name="confirmPassword">
+  </div>
+  <div class="d-grid">
+    <button type="submit" class="btn btn-primary my-3">Submit</button>
+  </div>
+</form>
 
 <%- include('../partials/footer'); %>
