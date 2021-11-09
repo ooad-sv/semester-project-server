@@ -14,31 +14,33 @@ class Utilities {
     res.clearCookie('token');
   }
 
-  static authorize(req, res) {
+  static authenticate(req, res) {
+    req.data = {};
     const { token } = req.cookies;
+    let isAuthenticated = true;
     if (!token) {
-      return false;
+      isAuthenticated = false;
     }
     try {
-      req.person = Person.verifyToken(token);
+      req.data.person = Person.verifyToken(token);
     } catch {
       Utilities.clearTokenCookie(res);
-      return false;
+      isAuthenticated = false;
     }
-    return true;
+    req.data.isAuthenticated = isAuthenticated;
   }
 
-  static isUnauthorized(req, res, next) {
-    const authorization = Utilities.authorize(req, res);
-    if (authorization) {
+  static unauthenticated(req, res, next) {
+    Utilities.authenticate(req, res);
+    if (req.data.isAuthenticated) {
       return res.redirect('/dashboard');
     }
     return next();
   }
 
-  static isAuthorized(req, res, next) {
-    const authorization = Utilities.authorize(req, res);
-    if (!authorization) {
+  static authenticated(req, res, next) {
+    Utilities.authenticate(req, res);
+    if (!req.data.isAuthenticated) {
       return res.redirect('/');
     }
     return next();
