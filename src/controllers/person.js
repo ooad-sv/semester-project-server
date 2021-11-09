@@ -92,12 +92,6 @@ router.get('/logout', Utilities.authenticated, async (req, res) => {
   return res.redirect('/');
 });
 
-router.get('/preferences', Utilities.authenticated,
-  async (req, res) => {
-    req.data.title = 'Preferences';
-    res.render('person/preferences', req.data);
-  });
-
 router.get('/profile', Utilities.authenticated,
   async (req, res) => {
     req.data.title = 'Profile';
@@ -131,6 +125,12 @@ router.post('/profile', Utilities.authenticated,
       req.data.errors = ['Something went wrong!'];
       return res.render('person/profile', req.data);
     }
+  });
+
+router.get('/preferences', Utilities.authenticated,
+  async (req, res) => {
+    req.data.title = 'Preferences';
+    res.render('person/preferences', req.data);
   });
 
 module.exports = router;

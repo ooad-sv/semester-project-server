@@ -2,5 +2,80 @@
 <%- include('../partials/header'); %>
 
 <h1 class="my-3">Preferences</h1>
+<% if (typeof (errors) != 'undefined' && errors.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+    <% for(let i=0; i<errors.length; i++) {%>
+      <div><%= errors[i]%></div>
+    <% } %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+<% if (typeof (updated) != 'undefined' && updated) { %>
+  <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
+    <span>Preferences updated successfully!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+<form class="row g-3" action="/preferences" method="POST">
+  <div class="col-12">
+    <div class="form-check">
+      <label class="form-check-label" for="exampleCheck1">Receive interval notifications</label>
+      <input type="checkbox" class="form-check-input" id="exampleCheck1" name="intervalNotificationsEnabled">
+    </div>
+  </div>
+  <div class="col-12">
+    <label class="form-label" for="exampleSelect">Time interval</label>
+    <select class="form-select" id="exampleSelect" aria-label="Default select example" name="timeInterval">
+      <option value="1">1 hour</option>
+      <option value="2">2 hours</option>
+      <option value="3">3 hours</option>
+      <option value="4" selected="">4 hours</option>
+      <option value="6">6 hours</option>
+      <option value="8">8 hours</option>
+      <option value="12">12 hours</option>
+    </select>
+  </div>
+  <div class="col-12">
+    <div class="form-check">
+      <label class="form-check-label" for="exampleCheck2">Receive alarm notifications</label>
+      <input type="checkbox" class="form-check-input" id="exampleCheck2" name="alarmNotificationsEnabled">
+    </div>
+  </div>
+  <div class="col-md-6">
+    <label for="exampleInput1" class="form-label">Minimum Temperature</label>
+    <input type="text" class="form-control" id="exampleInput1" name="minTemperature">
+  </div>
+  <div class="col-md-6">
+    <label for="exampleInput2" class="form-label">Maximum Temperature</label>
+    <input type="text" class="form-control" id="exampleInput2" name="maxTemperature">
+  </div>
+  <div class="col-md-6">
+    <label for="exampleInput3" class="form-label">Minimum Pressure</label>
+    <input type="text" class="form-control" id="exampleInput3" name="minPressure">
+  </div>
+  <div class="col-md-6">
+    <label for="exampleInput4" class="form-label">Maximum Pressure</label>
+    <input type="text" class="form-control" id="exampleInput4" name="maxPressure">
+  </div>
+  <div class="col-md-6">
+    <label for="exampleInput5" class="form-label">Minimum Humidity</label>
+    <input type="text" class="form-control" id="exampleInput5" name="minHumidity">
+  </div>
+  <div class="col-md-6">
+    <label for="exampleInput6" class="form-label">Maximum Humidity</label>
+    <input type="text" class="form-control" id="exampleInput6" name="maxHumidity">
+  </div>
+  <div class="col-md-6">
+    <label for="exampleInput7" class="form-label">Minimum Altitude</label>
+    <input type="text" class="form-control" id="exampleInput7" name="minAltitude">
+  </div>
+  <div class="col-md-6">
+    <label for="exampleInput8" class="form-label">Maximum Altitude</label>
+    <input type="text" class="form-control" id="exampleInput8" name="maxAltitude">
+  </div>
+  <div class="d-grid">
+    <button type="submit" class="btn btn-primary my-3">Submit</button>
+  </div>
+</form>
 
 <%- include('../partials/footer'); %>
