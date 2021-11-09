@@ -89,11 +89,33 @@ class Person {
     return preferences;
   }
 
+  static async getPreferences(email) {
+    const rows = await Person.find(email);
+    let preferences = rows[0];
+    if (preferences.intervalNotificationsEnabled === null) {
+      const defaultPreferences = {
+        timeInterval: 4,
+        intervalNotificationsEnabled: true,
+        alarmNotificationsEnabled: true,
+        minTemperature: 0.75,
+        maxTemperature: 1.75,
+        minPressure: 0.75,
+        maxPressure: 1.75,
+        minHumidity: 0.75,
+        maxHumidity: 1.75,
+        minAltitude: 0.75,
+        maxAltitude: 1.75,
+      };
+      preferences = defaultPreferences;
+    }
+    return preferences;
+  }
+
   static createToken(person) {
     const data = (({
-      id, firstName, lastName, email, isAdmin,
+      id, firstName, lastName, email, isAdmin, intervalNotificationsEnabled,
     }) => ({
-      id, firstName, lastName, email, isAdmin,
+      id, firstName, lastName, email, isAdmin, intervalNotificationsEnabled,
     }))(person);
     return jwt.sign(data, config.auth.jwtSecretKey, { expiresIn: '90d' });
   }

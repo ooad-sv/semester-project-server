@@ -43,6 +43,9 @@ class Utilities {
     if (!req.data.isAuthenticated) {
       return res.redirect('/');
     }
+    if (req.data.person.intervalNotificationsEnabled === null && req.path !== '/preferences') {
+      return res.redirect('/preferences');
+    }
     return next();
   }
 }

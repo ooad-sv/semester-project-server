@@ -20,58 +20,67 @@
   <div class="col-12">
     <div class="form-check">
       <label class="form-check-label" for="exampleCheck1">Receive interval notifications</label>
-      <input type="checkbox" class="form-check-input" id="exampleCheck1" value="true" name="intervalNotificationsEnabled">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1" name="intervalNotificationsEnabled"
+      value="true" <% if (preferences.intervalNotificationsEnabled) { %> checked="" <% } %> >
     </div>
   </div>
   <div class="col-12">
     <label class="form-label" for="exampleSelect">Time interval</label>
     <select class="form-select" id="exampleSelect" aria-label="Default select example" name="timeInterval">
-      <option value="1">1 hour</option>
-      <option value="2">2 hours</option>
-      <option value="3">3 hours</option>
-      <option value="4" selected="">4 hours</option>
-      <option value="6">6 hours</option>
-      <option value="8">8 hours</option>
-      <option value="12">12 hours</option>
+      <% const timeIntervals = [1, 2, 3, 4, 6, 8, 12]; %>
+      <% for (const timeInterval of timeIntervals) { %>
+        <option value="<%= timeInterval %>" <% if (timeInterval == preferences.timeInterval) { %> selected="" <% } %> >
+          <%= timeInterval %> hour<%= timeInterval != 1 ? 's' : '' %>
+        </option>
+      <% } %>
     </select>
   </div>
   <div class="col-12">
     <div class="form-check">
       <label class="form-check-label" for="exampleCheck2">Receive alarm notifications</label>
-      <input type="checkbox" class="form-check-input" id="exampleCheck2" value="true" name="alarmNotificationsEnabled">
+      <input type="checkbox" class="form-check-input" id="exampleCheck2" name="alarmNotificationsEnabled"
+        value="true" <% if (preferences.alarmNotificationsEnabled) { %> checked="" <% } %> >
     </div>
   </div>
   <div class="col-md-6">
     <label for="exampleInput1" class="form-label">Minimum Temperature</label>
-    <input type="number" step="0.01" class="form-control" id="exampleInput1" name="minTemperature">
+    <input type="number" step="0.01" class="form-control" id="exampleInput1" name="minTemperature"
+      value="<%= preferences.minTemperature %>">
   </div>
   <div class="col-md-6">
     <label for="exampleInput2" class="form-label">Maximum Temperature</label>
-    <input type="number" step="0.01" class="form-control" id="exampleInput2" name="maxTemperature">
+    <input type="number" step="0.01" class="form-control" id="exampleInput2" name="maxTemperature"
+      value="<%= preferences.maxTemperature %>">
   </div>
   <div class="col-md-6">
     <label for="exampleInput3" class="form-label">Minimum Pressure</label>
-    <input type="number" step="0.01" class="form-control" id="exampleInput3" name="minPressure">
+    <input type="number" step="0.01" class="form-control" id="exampleInput3" name="minPressure"
+      value="<%= preferences.minPressure %>">
   </div>
   <div class="col-md-6">
     <label for="exampleInput4" class="form-label">Maximum Pressure</label>
-    <input type="number" step="0.01" class="form-control" id="exampleInput4" name="maxPressure">
+    <input type="number" step="0.01" class="form-control" id="exampleInput4" name="maxPressure"
+      value="<%= preferences.maxPressure %>">
   </div>
   <div class="col-md-6">
     <label for="exampleInput5" class="form-label">Minimum Humidity</label>
-    <input type="number" step="0.01" class="form-control" id="exampleInput5" name="minHumidity">
+    <input type="number" step="0.01" class="form-control" id="exampleInput5" name="minHumidity"
+      value="<%= preferences.minHumidity %>">
   </div>
   <div class="col-md-6">
     <label for="exampleInput6" class="form-label">Maximum Humidity</label>
-    <input type="number" step="0.01" class="form-control" id="exampleInput6" name="maxHumidity">
+    <input type="number" step="0.01" class="form-control" id="exampleInput6" name="maxHumidity"
+      value="<%= preferences.maxHumidity %>">
   </div>
   <div class="col-md-6">
     <label for="exampleInput7" class="form-label">Minimum Altitude</label>
-    <input type="number" step="0.01" class="form-control" id="exampleInput7" name="minAltitude">
+    <input type="number" step="0.01" class="form-control" id="exampleInput7" name="minAltitude"
+      value="<%= preferences.minAltitude %>">
   </div>
   <div class="col-md-6">
     <label for="exampleInput8" class="form-label">Maximum Altitude</label>
-    <input type="number" step="0.01" class="form-control" id="exampleInput8" name="maxAltitude">
+    <input type="number" step="0.01" class="form-control" id="exampleInput8" name="maxAltitude"
+      value="<%= preferences.maxAltitude %>">
   </div>
   <div class="d-grid">
     <button type="submit" class="btn btn-primary my-3">Submit</button>

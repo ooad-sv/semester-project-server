@@ -134,6 +134,8 @@ router.post('/profile', Utilities.authenticated,
 router.get('/preferences', Utilities.authenticated,
   async (req, res) => {
     req.data.title = 'Preferences';
+    const preferences = await Person.getPreferences(req.data.person.email);
+    req.data.preferences = preferences;
     res.render('person/preferences', req.data);
   });
 
