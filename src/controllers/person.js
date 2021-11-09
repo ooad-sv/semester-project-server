@@ -9,6 +9,8 @@ router.get('/', Utilities.isUnauthorized,
   async (req, res) => res.render('person/login', { title: 'Login' }));
 
 router.post('/login', Utilities.isUnauthorized,
+  body('email', 'Email not valid!').trim().isEmail().normalizeEmail(),
+  body('password', 'Password must be at least 4 characters long!').trim().isLength({ min: 4 }),
   async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -35,6 +37,8 @@ router.get('/register', Utilities.isUnauthorized,
   async (req, res) => res.render('person/register', { title: 'Register' }));
 
 router.post('/register', Utilities.isUnauthorized,
+  body('firstName', 'First name cannot be empty!').trim().not().isEmpty(),
+  body('lastName', 'Last name cannot be empty!').trim().not().isEmpty(),
   body('email', 'Email not valid!').trim().isEmail().normalizeEmail(),
   body('password', 'Password must be at least 4 characters long!').trim().isLength({ min: 4 }),
   body('confirmPassword', 'Passwords must be the same!').custom(async (confirmPassword, { req }) => {

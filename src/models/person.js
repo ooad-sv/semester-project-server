@@ -20,11 +20,16 @@ class Person {
   static async create(personData) {
     const person = personData;
     person.hashedPassword = await Person.hashPassword(person.password);
+    person.isAdmin = false;
     delete person.password;
-    const { email, hashedPassword } = person;
+    const {
+      firstName, lastName, email, hashedPassword, isAdmin,
+    } = person;
     await db.query(
-      'INSERT INTO "Person" ("email", "hashedPassword") VALUES ($1, $2);',
-      [email, hashedPassword],
+      `INSERT INTO "Person" 
+      ("firstName", "lastName", "email", "hashedPassword", "isAdmin") 
+      VALUES ($1, $2, $3, $4, $5);`,
+      [firstName, lastName, email, hashedPassword, isAdmin],
     );
     return person;
   }
