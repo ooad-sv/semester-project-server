@@ -122,7 +122,9 @@ router.post('/profile', Utilities.authenticated,
       const person = await Person.update(personData);
       const token = Person.createToken(person);
       Utilities.setTokenCookie(res, token);
-      return res.redirect('/profile');
+      req.data.person = person;
+      req.data.updated = true;
+      return res.render('person/profile', req.data);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);

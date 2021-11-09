@@ -10,6 +10,12 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% } %>
+<% if (typeof (updated) != 'undefined' && updated) { %>
+  <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
+    <span>Profile updated successfully!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
 <form action="/profile" method="POST">
   <div class="mb-3">
     <label for="exampleInput1" class="form-label">First name</label>
