@@ -27,13 +27,14 @@ class Person {
     person.arePreferencesSet = false;
     delete person.password;
     const {
-      firstName, lastName, email, hashedPassword, isAdmin,
+      firstName, lastName, email, hashedPassword,
     } = person;
     await db.query(
       `INSERT INTO "Person" 
-      ("firstName", "lastName", "email", "hashedPassword", "isAdmin") 
-      VALUES ($1, $2, $3, $4, $5);`,
-      [firstName, lastName, email, hashedPassword, isAdmin],
+      ("firstName", "lastName", "email", "hashedPassword", 
+      "isAdmin", "intervalNotificationsEnabled", "alarmNotificationsEnabled", "timeInterval", "arePreferencesSet") 
+      VALUES ($1, $2, $3, $4, false, true, true, 4, false);`,
+      [firstName, lastName, email, hashedPassword],
     );
     return person;
   }
