@@ -4,8 +4,9 @@ const config = require('./config');
 const pool = new Pool(config.db);
 
 async function query(sqlQuery, params) {
-  const { rows } = await pool.query(sqlQuery, params);
-  return rows;
+  let result = await pool.query(sqlQuery, params);
+  result = (({ rowCount, rows }) => ({ rowCount, rows }))(result);
+  return result;
 }
 
 module.exports = {

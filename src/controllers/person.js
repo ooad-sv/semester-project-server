@@ -22,7 +22,7 @@ router.post('/login', Utilities.unauthenticated,
         return res.render('person/login', req.data);
       }
       const { email, password } = req.body;
-      const rows = await Person.find(email);
+      const { rows } = await Person.find(email);
       if (!rows.length) {
         req.data.errors = ['Person with that email does not exist!'];
         return res.render('person/login', req.data);
@@ -68,7 +68,7 @@ router.post('/register', Utilities.unauthenticated,
       }
       let person = req.body;
       delete person.confirmPassword;
-      const rows = await Person.find(person.email);
+      const { rows } = await Person.find(person.email);
       if (rows.length) {
         req.data.errors = ['Person with that email already exists!'];
         return res.render('person/register', req.data);

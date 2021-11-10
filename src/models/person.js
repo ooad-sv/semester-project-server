@@ -40,7 +40,7 @@ class Person {
   }
 
   static async updateProfile(personData) {
-    const rows = await Person.find(personData.email);
+    const { rows } = await Person.find(personData.email);
     const newPerson = rows[0];
     if (personData.firstName && personData.firstName.length > 0) {
       newPerson.firstName = personData.firstName;
@@ -97,7 +97,7 @@ class Person {
   }
 
   static async getPreferences(email) {
-    const rows = await Person.find(email);
+    const { rows } = await Person.find(email);
     const preferences = rows[0];
     if (preferences.arePreferencesSet !== true) {
       preferences.minTemperature = 0.75;

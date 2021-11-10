@@ -1,0 +1,7 @@
+curl --location --request POST 'http://localhost:3000/weather-station/update' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'key=kkztpimkpbsyauczeekmnrgkyopnbpws' \
+--data-urlencode 'temperature=0.2' \
+--data-urlencode 'pressure=0' \
+--data-urlencode 'humidity=-2' \
+--data-urlencode 'altitude=2.5'

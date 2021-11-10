@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const personController = require('./controllers/person');
-const stationController = require('./controllers/station');
+const weatherStationController = require('./controllers/weatherStation');
 
 const app = express();
 const port = process.env.PORT;
@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/', personController);
-app.use('/', stationController);
+app.use('/', weatherStationController);
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
