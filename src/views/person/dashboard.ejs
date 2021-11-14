@@ -3,4 +3,21 @@
 
 <h1 class="my-3">Dashboard</h1>
 
+  <div class="row">
+    <% for (const weatherStation of weatherStations) { %>
+      <div class="col-md-6">
+        <div class="card mt-3">
+          <h5 class="card-header"><%= weatherStation.name %></h5>
+          <div class="card-body">
+            <p class="card-text mb-2">State: <%= weatherStation.enabledState ? 'Enabled' : 'Disabled' %></p>
+            <p class="card-text mb-2">Temperature: <%= weatherStation.temperature %></p>
+            <p class="card-text mb-2">Pressure: <%= weatherStation.pressure %></p>
+            <p class="card-text mb-2">Humidity: <%= weatherStation.humidity %></p>
+            <p class="card-text mb-2">Altitude: <%= weatherStation.altitude %></p>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
 <%- include('../partials/footer'); %>

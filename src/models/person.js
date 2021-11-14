@@ -106,6 +106,18 @@ class Person {
     return preferences;
   }
 
+  static async getSubscribedStations(id) {
+    const { rows } = await db.query(
+      `SELECT W."id", "name", "enabledState", "temperature", "pressure", "humidity", "altitude"
+      FROM "WeatherStation" AS W JOIN "Subscription" AS S
+      ON S."weatherStationId" = W."id"
+      WHERE S."personId" = $1
+      ORDER BY "enabledState" DESC, "id";`,
+      [id],
+    );
+    return rows;
+  }
+
   static async getSubscriptions(id) {
     const { rows } = await db.query(
       `SELECT "id", "name", "personId"

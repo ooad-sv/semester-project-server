@@ -88,6 +88,7 @@ router.post('/register', Utilities.unauthenticated,
 router.get('/dashboard', Utilities.authenticated,
   async (req, res) => {
     req.data.title = 'Dashboard';
+    req.data.weatherStations = await Person.getSubscribedStations(req.data.person.id);
     res.render('person/dashboard', req.data);
   });
 
