@@ -1,13 +1,21 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const format = require('pg-format');
 const config = require('../config');
 const db = require('../db');
 
 class Person {
-  static async find(email) {
+  static async findByEmail(email) {
     return db.query(
       'SELECT * FROM "Person" WHERE "email" = $1;',
       [email],
+    );
+  }
+
+  static async findById(id) {
+    return db.query(
+      'SELECT * FROM "Person" WHERE "id" = $1;',
+      [id],
     );
   }
 
@@ -40,7 +48,7 @@ class Person {
   }
 
   static async updateProfile(personData) {
-    const { rows } = await Person.find(personData.email);
+    const { rows } = await Person.findById(personData.id);
     const newPerson = rows[0];
     if (personData.firstName && personData.firstName.length > 0) {
       newPerson.firstName = personData.firstName;
@@ -93,11 +101,41 @@ class Person {
         minTemperature, maxTemperature, minPressure, maxPressure,
         minHumidity, maxHumidity, minAltitude, maxAltitude],
     );
+    await Person.updateSubscriptions(id, preferencesData.subscriptions);
+    preferences.subscriptions = await Person.getSubscriptions(id);
     return preferences;
   }
 
-  static async getPreferences(email) {
-    const { rows } = await Person.find(email);
+  static async getSubscriptions(id) {
+    const { rows } = await db.query(
+      `SELECT "id", "name", "personId"
+      FROM "WeatherStation" W
+      LEFT JOIN
+      (SELECT "weatherStationId", "personId"
+      FROM "Subscription"
+      WHERE "Subscription"."personId" = $1) AS S
+      ON S."weatherStationId" = W."id"
+      ORDER BY "id";`,
+      [id],
+    );
+    const subscriptions = rows.map((e) => {
+      e.enabled = e.personId !== null;
+      delete e.personId;
+      return e;
+    });
+    return subscriptions;
+  }
+
+  static async updateSubscriptions(id, rawSubscriptions) {
+    const subscriptions = rawSubscriptions.map((e) => ([id, e]));
+    const query = format(`DELETE FROM "Subscription" WHERE "personId" = %L;
+    INSERT INTO "Subscription" ("personId", "weatherStationId")
+    VALUES %L;`, id, subscriptions);
+    await db.query(query);
+  }
+
+  static async getPreferences(id) {
+    const { rows } = await Person.findById(id);
     const preferences = rows[0];
     if (preferences.arePreferencesSet !== true) {
       preferences.minTemperature = 0.75;
@@ -109,6 +147,7 @@ class Person {
       preferences.minAltitude = 0.75;
       preferences.maxAltitude = 1.75;
     }
+    preferences.subscriptions = await Person.getSubscriptions(id);
     return preferences;
   }
 

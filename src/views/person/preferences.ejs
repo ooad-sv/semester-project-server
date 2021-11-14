@@ -18,6 +18,21 @@
 <% } %>
 <form class="row g-3" action="/preferences" method="POST">
   <div class="col-12">
+    <h4>Weather Station Subscriptions:</h4>
+  </div>
+  <% for (const subscription of preferences.subscriptions) { %>
+    <div class="col-md-6">
+      <div class="form-check">
+        <label class="form-check-label" for="stationCheck<%= subscription.id %>"><%= subscription.name %></label>
+        <input type="checkbox" class="form-check-input" id="stationCheck<%= subscription.id %>" name="subscriptions[]"
+        value="<%= subscription.id %>" <% if (subscription.enabled) { %> checked="" <% } %> >
+      </div>
+    </div>
+  <% } %>
+  <div class="col-12">
+    <h4>Notifications:</h4>
+  </div>
+  <div class="col-12">
     <div class="form-check">
       <label class="form-check-label" for="exampleCheck1">Receive interval notifications</label>
       <input type="checkbox" class="form-check-input" id="exampleCheck1" name="intervalNotificationsEnabled"
