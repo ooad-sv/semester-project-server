@@ -1,5 +1,5 @@
 # CSCI 5448: Object-Oriented Analysis & Design (OOAD) (Fall 2021)
-## Semester Project
+## Semester Project- Weather Monitoring System
 
 ## Team Members
 1. Sagar Pathare
