@@ -5,6 +5,9 @@ const config = require('../config');
 const db = require('../db');
 
 class Person {
+  /*
+ MVC pattern: Person Model interacts with Person table in the database
+ */
   static async findByEmail(email) {
     return db.query(
       'SELECT * FROM "Person" WHERE "email" = $1;',
@@ -118,6 +121,9 @@ class Person {
     return rows;
   }
 
+  /*
+ Observer pattern: Person subscribes to multiple WeatherStations.
+ */
   static async getSubscriptions(id) {
     const { rows } = await db.query(
       `SELECT "id", "name", "personId"

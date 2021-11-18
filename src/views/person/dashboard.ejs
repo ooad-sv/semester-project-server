@@ -1,6 +1,12 @@
 
 <%- include('../partials/header'); %>
 
+<!-- Composite pattern: The DOM tree in HTML is a good example of the Composite pattern. 
+Each element in the DOM tree implements the HTMLComponent interface. An element
+can either be an HTMLComposite, which further contains more elements, or it could
+be an HTMLLeaf, the leaf of that tree node. Both HTMLLeaf and HTMLComposite
+implement the HTMLComponent interface. -->
+
 <h1 class="my-3">Dashboard</h1>
 
   <div class="row">

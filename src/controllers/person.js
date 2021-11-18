@@ -1,5 +1,8 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
+/*
+ MVC pattern: Person Controller uses Person Model and renders Person View
+ */
 const Person = require('../models/person');
 const Utilities = require('../utilities');
 

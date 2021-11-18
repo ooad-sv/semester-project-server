@@ -6,6 +6,9 @@ class WeatherStation {
   }
 
   static async updateData(data) {
+  /*
+ MVC pattern: WeatherStation Model interacts with WeatherStation table in the database
+ */
     const {
       key, temperature, pressure, humidity, altitude,
     } = data;
