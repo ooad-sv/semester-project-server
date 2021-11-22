@@ -8,13 +8,13 @@ const Utilities = require('../utilities');
 
 const router = express.Router();
 
-router.get('/', Utilities.unauthenticated,
+router.get('/', Utilities.isUnauthenticated,
   async (req, res) => {
     req.data.title = 'Login';
     res.render('person/login', req.data);
   });
 
-router.post('/login', Utilities.unauthenticated,
+router.post('/login', Utilities.isUnauthenticated,
   body('email', 'Email not valid!').trim().isEmail().normalizeEmail(),
   async (req, res) => {
     req.data.title = 'Login';
@@ -47,13 +47,13 @@ router.post('/login', Utilities.unauthenticated,
     }
   });
 
-router.get('/register', Utilities.unauthenticated,
+router.get('/register', Utilities.isUnauthenticated,
   async (req, res) => {
     req.data.title = 'Register';
     res.render('person/register', req.data);
   });
 
-router.post('/register', Utilities.unauthenticated,
+router.post('/register', Utilities.isUnauthenticated,
   body('firstName', 'First name cannot be empty!').trim().not().isEmpty(),
   body('lastName', 'Last name cannot be empty!').trim().not().isEmpty(),
   body('email', 'Email not valid!').trim().isEmail().normalizeEmail(),
@@ -88,25 +88,25 @@ router.post('/register', Utilities.unauthenticated,
     }
   });
 
-router.get('/dashboard', Utilities.authenticated,
+router.get('/dashboard', Utilities.isAuthenticated,
   async (req, res) => {
     req.data.title = 'Dashboard';
     req.data.weatherStations = await Person.getSubscribedStations(req.data.person.id);
     res.render('person/dashboard', req.data);
   });
 
-router.get('/logout', Utilities.authenticated, async (req, res) => {
+router.get('/logout', Utilities.isAuthenticated, async (req, res) => {
   Utilities.clearTokenCookie(res);
   return res.redirect('/');
 });
 
-router.get('/profile', Utilities.authenticated,
+router.get('/profile', Utilities.isAuthenticated,
   async (req, res) => {
     req.data.title = 'Profile';
     res.render('person/profile', req.data);
   });
 
-router.post('/profile', Utilities.authenticated,
+router.post('/profile', Utilities.isAuthenticated,
   body('password', 'Password must be at least 4 characters long!').optional({ checkFalsy: true }).trim().isLength({ min: 4 }),
   body('confirmPassword', 'Passwords must be the same!').custom(async (confirmPassword, { req }) => {
     if (req.body.password !== confirmPassword) throw new Error();
@@ -135,7 +135,7 @@ router.post('/profile', Utilities.authenticated,
     }
   });
 
-router.get('/preferences', Utilities.authenticated,
+router.get('/preferences', Utilities.isAuthenticated,
   async (req, res) => {
     req.data.title = 'Preferences';
     const preferences = await Person.getPreferences(req.data.person.id);
@@ -143,7 +143,7 @@ router.get('/preferences', Utilities.authenticated,
     res.render('person/preferences', req.data);
   });
 
-router.post('/preferences', Utilities.authenticated,
+router.post('/preferences', Utilities.isAuthenticated,
   async (req, res) => {
     req.data.title = 'Preferences';
     try {

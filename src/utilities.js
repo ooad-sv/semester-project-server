@@ -30,7 +30,7 @@ class Utilities {
     req.data.isAuthenticated = isAuthenticated;
   }
 
-  static unauthenticated(req, res, next) {
+  static isUnauthenticated(req, res, next) {
     Utilities.authenticate(req, res);
     if (req.data.isAuthenticated) {
       return res.redirect('/dashboard');
@@ -38,7 +38,7 @@ class Utilities {
     return next();
   }
 
-  static authenticated(req, res, next) {
+  static isAuthenticated(req, res, next) {
     Utilities.authenticate(req, res);
     if (!req.data.isAuthenticated) {
       return res.redirect('/');

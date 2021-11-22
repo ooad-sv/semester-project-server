@@ -157,7 +157,9 @@ class Person {
   static async getPreferences(id) {
     const { rows } = await Person.findById(id);
     const preferences = rows[0];
+    preferences.subscriptions = await Person.getSubscriptions(id);
     if (preferences.arePreferencesSet !== true) {
+      preferences.subscriptions.forEach((e) => { e.enabled = true; });
       preferences.minTemperature = 0.75;
       preferences.maxTemperature = 1.75;
       preferences.minPressure = 0.75;
@@ -167,7 +169,6 @@ class Person {
       preferences.minAltitude = 0.75;
       preferences.maxAltitude = 1.75;
     }
-    preferences.subscriptions = await Person.getSubscriptions(id);
     return preferences;
   }
 
