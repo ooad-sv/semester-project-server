@@ -1,6 +1,7 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const WeatherStation = require('../models/weatherStation');
+const Utilities = require('../utilities');
 
 const router = express.Router();
 
@@ -21,6 +22,14 @@ router.post('/weather-station/update',
       return res.status(404).send('Weather station not found!');
     }
     return res.status(200).send('OK!');
+  });
+
+router.post('/weather-station/toggle-state', Utilities.isAuthenticated, Utilities.isAdmin,
+  body('id', 'Id not valid!').trim().isNumeric(),
+  async (req, res) => {
+    const { id } = req.body;
+    await WeatherStation.toggleState(id);
+    res.redirect('/dashboard');
   });
 
 module.exports = router;

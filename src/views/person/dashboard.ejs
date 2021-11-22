@@ -9,21 +9,35 @@ implement the HTMLComponent interface. -->
 
 <h1 class="my-3">Dashboard</h1>
 
-  <div class="row">
-    <% for (const weatherStation of weatherStations) { %>
-      <div class="col-md-6">
-        <div class="card mt-3">
-          <h5 class="card-header"><%= weatherStation.name %></h5>
-          <div class="card-body">
-            <p class="card-text mb-2">State: <%= weatherStation.enabledState ? 'Enabled' : 'Disabled' %></p>
-            <p class="card-text mb-2">Temperature: <%= weatherStation.temperature %></p>
-            <p class="card-text mb-2">Pressure: <%= weatherStation.pressure %></p>
-            <p class="card-text mb-2">Humidity: <%= weatherStation.humidity %></p>
-            <p class="card-text mb-2">Altitude: <%= weatherStation.altitude %></p>
-          </div>
+  <% if (person.isAdmin) { %>
+  <form class="row g-3 my-3" action="/weather-station/toggle-state" method="POST">
+  <% } else { %>
+  <div class="row g-3 my-3">
+  <% } %>
+  <% for (const weatherStation of weatherStations) { %>
+    <div class="col-md-6">
+      <div class="card <%= weatherStation.enabledState ? 'border-primary' : 'text-dark bg-light' %>">
+        <h5 class="card-header"><%= weatherStation.name %></h5>
+        <div class="card-body">
+          <p class="card-text mb-2">State: <%= weatherStation.enabledState ? 'Enabled' : 'Disabled' %></p>
+          <p class="card-text mb-2">Temperature: <%= weatherStation.temperature %></p>
+          <p class="card-text mb-2">Pressure: <%= weatherStation.pressure %></p>
+          <p class="card-text mb-2">Humidity: <%= weatherStation.humidity %></p>
+          <p class="card-text mb-2">Altitude: <%= weatherStation.altitude %></p>
         </div>
+        <% if (person.isAdmin) { %>
+        <div class="card-footer text-center">
+          <button type="submit" name="id" value="<%= weatherStation.id %>" 
+            class="btn <%= weatherStation.enabledState ? 'btn-secondary' : 'btn-primary' %>"><%= weatherStation.enabledState ? 'Disable' : 'Enable' %></button>
+        </div>
+        <% } %>
       </div>
-    <% } %>
+    </div>
+  <% } %>
+  <% if (person.isAdmin) { %>
+  </form>
+  <% } else { %>
   </div>
+  <% } %>
 
 <%- include('../partials/footer'); %>

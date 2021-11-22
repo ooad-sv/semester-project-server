@@ -135,7 +135,7 @@ router.post('/profile', Utilities.isAuthenticated,
     }
   });
 
-router.get('/preferences', Utilities.isAuthenticated,
+router.get('/preferences', Utilities.isAuthenticated, Utilities.isUser,
   async (req, res) => {
     req.data.title = 'Preferences';
     const preferences = await Person.getPreferences(req.data.person.id);
@@ -143,7 +143,7 @@ router.get('/preferences', Utilities.isAuthenticated,
     res.render('person/preferences', req.data);
   });
 
-router.post('/preferences', Utilities.isAuthenticated,
+router.post('/preferences', Utilities.isAuthenticated, Utilities.isUser,
   async (req, res) => {
     req.data.title = 'Preferences';
     try {

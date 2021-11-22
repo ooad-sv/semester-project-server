@@ -48,6 +48,20 @@ class Utilities {
     }
     return next();
   }
+
+  static isUser(req, res, next) {
+    if (req.data.person.isAdmin === true) {
+      return res.redirect('/');
+    }
+    return next();
+  }
+
+  static isAdmin(req, res, next) {
+    if (req.data.person.isAdmin === false) {
+      return res.redirect('/');
+    }
+    return next();
+  }
 }
 
 module.exports = Utilities;

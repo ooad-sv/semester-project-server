@@ -20,6 +20,15 @@ class WeatherStation {
     );
     return rowCount;
   }
+
+  static async toggleState(id) {
+    await db.query(
+      `UPDATE "WeatherStation" 
+      SET "enabledState" = NOT "enabledState"
+      WHERE "id" = $1;`,
+      [id],
+    );
+  }
 }
 
 module.exports = WeatherStation;
