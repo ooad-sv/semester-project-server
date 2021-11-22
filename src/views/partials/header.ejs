@@ -34,7 +34,7 @@
             </ul>
             <span class="navbar-text">
               <span>Logged in as </span>
-              <span class="text-light"><%= person.firstName %></span>
+              <span class="<%= person.isAdmin ? 'text-warning' : 'text-light' %>"><%= person.firstName %></span>
             </span>
             <ul class="navbar-nav mb-2 mb-md-0">
               <li class="nav-item">
