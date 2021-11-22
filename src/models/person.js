@@ -40,13 +40,15 @@ class Person {
     const {
       firstName, lastName, email, hashedPassword,
     } = person;
-    await db.query(
+    const result = await db.query(
       `INSERT INTO "Person" 
       ("firstName", "lastName", "email", "hashedPassword", 
       "isAdmin", "intervalNotificationsEnabled", "alarmNotificationsEnabled", "timeInterval", "arePreferencesSet") 
-      VALUES ($1, $2, $3, $4, false, true, true, 4, false);`,
+      VALUES ($1, $2, $3, $4, false, true, true, 4, false)
+      RETURNING id;`,
       [firstName, lastName, email, hashedPassword],
     );
+    person.id = result.rows[0].id;
     return person;
   }
 
