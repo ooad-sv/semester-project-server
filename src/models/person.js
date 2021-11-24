@@ -106,7 +106,8 @@ class Person {
         minTemperature, maxTemperature, minPressure, maxPressure,
         minHumidity, maxHumidity, minAltitude, maxAltitude],
     );
-    await Person.updateSubscriptions(id, preferencesData.subscriptions);
+    const subscriptions = preferencesData.subscriptions || [];
+    await Person.updateSubscriptions(id, subscriptions);
     preferences.subscriptions = await Person.getSubscriptions(id);
     return preferences;
   }
@@ -147,11 +148,14 @@ class Person {
   }
 
   static async updateSubscriptions(id, rawSubscriptions) {
-    const subscriptions = rawSubscriptions.map((e) => ([id, e]));
-    const query = format(`DELETE FROM "Subscription" WHERE "personId" = %L;
-    INSERT INTO "Subscription" ("personId", "weatherStationId")
-    VALUES %L;`, id, subscriptions);
-    await db.query(query);
+    await db.query('DELETE FROM "Subscription" WHERE "personId" = $1;', [id]);
+    if (rawSubscriptions.length > 0) {
+      const subscriptions = rawSubscriptions.map((e) => ([id, e]));
+      const query = format(`
+      INSERT INTO "Subscription" ("personId", "weatherStationId")
+      VALUES %L;`, id, subscriptions);
+      await db.query(query);
+    }
   }
 
   static async getPreferences(id) {
