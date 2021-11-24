@@ -153,7 +153,7 @@ class Person {
       const subscriptions = rawSubscriptions.map((e) => ([id, e]));
       const query = format(`
       INSERT INTO "Subscription" ("personId", "weatherStationId")
-      VALUES %L;`, id, subscriptions);
+      VALUES %L;`, subscriptions);
       await db.query(query);
     }
   }
