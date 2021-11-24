@@ -2,6 +2,8 @@ require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const cookieParser = require('cookie-parser');
+// const cron = require('node-cron');
+
 const personController = require('./controllers/person');
 const weatherStationController = require('./controllers/weatherStation');
 
@@ -31,5 +33,10 @@ app.use('/', weatherStationController);
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Example app listening at http://localhost:${port}, current hour: ${new Date().getHours()}`);
 });
+
+// cron.schedule('* * * * *', () => {
+//   // eslint-disable-next-line no-console
+//   console.log(`running a task every minute ${new Date().getHours()}`);
+// });
