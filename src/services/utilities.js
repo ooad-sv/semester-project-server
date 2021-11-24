@@ -1,4 +1,4 @@
-const Person = require('./models/person');
+const Person = require('../models/person');
 
 class Utilities {
   static setTokenCookie(res, token) {

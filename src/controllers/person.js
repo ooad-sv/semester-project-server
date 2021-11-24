@@ -1,11 +1,11 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
-const mailer = require('../mailer');
+const mailer = require('../services/mailer');
 /*
  MVC pattern: Person Controller uses Person Model and renders Person View
  */
 const Person = require('../models/person');
-const Utilities = require('../utilities');
+const Utilities = require('../services/utilities');
 
 const router = express.Router();
 

@@ -1,7 +1,7 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const WeatherStation = require('../models/weatherStation');
-const Utilities = require('../utilities');
+const Utilities = require('../services/utilities');
 
 const router = express.Router();
 

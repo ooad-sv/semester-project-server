@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const format = require('pg-format');
 const config = require('../config');
-const db = require('../db');
+const db = require('../services/db');
 
 class Person {
   /*

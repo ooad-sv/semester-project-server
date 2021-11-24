@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const config = require('./config');
+const config = require('../config');
 
 /*
  Object Pool pattern: The WebServer will get an instance of the DBConnectionPool
