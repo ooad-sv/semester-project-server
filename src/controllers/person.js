@@ -1,5 +1,6 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
+const mailer = require('../mailer');
 /*
  MVC pattern: Person Controller uses Person Model and renders Person View
  */
@@ -126,6 +127,11 @@ router.post('/profile', Utilities.isAuthenticated,
       Utilities.setTokenCookie(res, token);
       req.data.person = person;
       req.data.updated = true;
+      await mailer.sendMail({
+        to: personData.email,
+        subject: 'Profile Updated!',
+        text: 'Your profile was successfully updated!',
+      });
       return res.render('person/profile', req.data);
     } catch (error) {
       // eslint-disable-next-line no-console

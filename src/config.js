@@ -8,6 +8,10 @@ const config = {
   auth: {
     jwtSecretKey: env.JWT_SECRET_KEY,
   },
+  mailer: {
+    email: env.MAILER_EMAIL,
+    password: env.MAILER_PASSWORD,
+  },
 };
 
 module.exports = config;

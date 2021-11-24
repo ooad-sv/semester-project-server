@@ -53,7 +53,7 @@ class Person {
   }
 
   static async updateProfile(personData) {
-    const { rows } = await Person.findById(personData.id);
+    const { rows } = await Person.findByEmail(personData.email);
     const newPerson = rows[0];
     if (personData.firstName && personData.firstName.length > 0) {
       newPerson.firstName = personData.firstName;
