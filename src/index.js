@@ -4,7 +4,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const cron = require('node-cron');
 
-const scheduler = require('./services/scheduler');
+const jobs = require('./services/jobs');
 const personController = require('./controllers/person');
 const weatherStationController = require('./controllers/weatherStation');
 
@@ -37,6 +37,6 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
 
-cron.schedule('0 * * * *', scheduler.intervalNotificationsJob);
-// cron.schedule('* * * * *', scheduler.intervalNotificationsJob);
-// scheduler.intervalNotificationsJob();
+cron.schedule('0 * * * *', jobs.intervalNotificationsJob);
+// cron.schedule('* * * * *', jobs.intervalNotificationsJob);
+// jobs.intervalNotificationsJob();
