@@ -1,3 +1,4 @@
+const format = require('pg-format');
 const db = require('../services/db');
 
 class WeatherStation {
@@ -28,6 +29,34 @@ class WeatherStation {
       WHERE "id" = $1;`,
       [id],
     );
+  }
+
+  static async getIntervalNotifications(queryTimeIntervals) {
+    const query = format(`SELECT "firstName", "email", "name", "temperature", "pressure", "humidity", "altitude"
+    FROM "Subscription" S
+    JOIN "WeatherStation" W ON W."id" = S."weatherStationId"
+    JOIN "Person" P ON P."id" = S."personId" 
+    WHERE W."enabledState" = true 
+      and P."intervalNotificationsEnabled" = true 
+      and "timeInterval" in (%L)
+    ORDER BY "email", S."id";`, queryTimeIntervals);
+    const { rows } = await db.query(query);
+    const users = {};
+    rows.forEach((row) => {
+      if (!(row.email in users)) {
+        users[row.email] = {
+          email: row.email,
+          firstName: row.firstName,
+          weatherStations: [],
+        };
+      }
+      users[row.email].weatherStations.push((({
+        name, temperature, pressure, humidity, altitude,
+      }) => ({
+        name, temperature, pressure, humidity, altitude,
+      }))(row));
+    });
+    return Object.values(users);
   }
 }
 
