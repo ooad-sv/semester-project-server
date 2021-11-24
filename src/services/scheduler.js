@@ -9,6 +9,7 @@ const intervalNotificationsJob = async () => {
   const queryTimeIntervals = timeIntervals.filter((interval) => currentHour % interval === 0);
   // eslint-disable-next-line no-console
   if (queryTimeIntervals.length > 0) {
+    // eslint-disable-next-line no-console
     console.log(`${getHours()} | Notification Intervals: ${queryTimeIntervals}`);
     const users = await WeatherStation.getIntervalNotifications(queryTimeIntervals);
     const usersCount = users.length;
@@ -16,6 +17,8 @@ const intervalNotificationsJob = async () => {
     for (let i = 0; i < usersCount; i++) {
       const user = users[i];
       const text = user.weatherStations.map((e) => `${e.name}\nTemperature: ${e.temperature}\nPressure: ${e.pressure}\nHumidity: ${e.humidity}\nAltitude: ${e.altitude}`).join('\n\n');
+      // eslint-disable-next-line no-console
+      console.log(`Email sent to ${user.email}, subscriptions: ${user.weatherStations.length}`);
       // eslint-disable-next-line no-await-in-loop
       await mailer.sendMail({
         to: user.email,
