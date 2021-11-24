@@ -17,8 +17,10 @@ const sendMail = async ({ to, subject, text }) => {
       subject,
       text,
     });
+    // eslint-disable-next-line no-console
     console.log(`Email sent: ${info.response}`);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(error);
   }
 };
