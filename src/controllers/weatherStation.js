@@ -2,6 +2,7 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const WeatherStation = require('../models/weatherStation');
 const Utilities = require('../services/utilities');
+const jobs = require('../services/jobs');
 
 const router = express.Router();
 
@@ -17,11 +18,14 @@ router.post('/weather-station/update',
       const errorString = errors.array().map((e) => e.msg).join(' ');
       return res.status(400).send(errorString);
     }
-    const rowCount = await WeatherStation.updateData(req.body);
+    const data = req.body;
+    const rowCount = await WeatherStation.updateData(data);
     if (rowCount !== 1) {
       return res.status(404).send('Weather station not found!');
     }
-    return res.status(200).send('OK!');
+    res.status(200).send('OK!');
+    jobs.alarmNotificationsJob(data.key);
+    return res;
   });
 
 router.post('/weather-station/toggle-state', Utilities.isAuthenticated, Utilities.isAdmin,

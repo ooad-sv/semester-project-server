@@ -3,6 +3,8 @@ const mailer = require('./mailer');
 
 const getHours = () => new Date().toLocaleString('en-US', { hour: 'numeric', hour12: true });
 
+const getIntervalNotificationText = (user) => user.weatherStations.map((e) => `${e.name}\nTemperature: ${e.temperature}\nPressure: ${e.pressure}\nHumidity: ${e.humidity}\nAltitude: ${e.altitude}`).join('\n\n');
+
 const intervalNotificationsJob = async () => {
   const currentHour = new Date().getHours();
   const timeIntervals = [1, 2, 3, 4, 6, 8, 12];
@@ -16,7 +18,7 @@ const intervalNotificationsJob = async () => {
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < usersCount; i++) {
       const user = users[i];
-      const text = user.weatherStations.map((e) => `${e.name}\nTemperature: ${e.temperature}\nPressure: ${e.pressure}\nHumidity: ${e.humidity}\nAltitude: ${e.altitude}`).join('\n\n');
+      const text = getIntervalNotificationText(user);
       // eslint-disable-next-line no-console
       console.log(`Email sent to ${user.email}, subscriptions: ${user.weatherStations.length}`);
       // eslint-disable-next-line no-await-in-loop
@@ -31,6 +33,59 @@ const intervalNotificationsJob = async () => {
   }
 };
 
+const getAlarmNotificationText = (weatherStation, user) => {
+  const {
+    name, temperature, pressure, humidity, altitude,
+  } = weatherStation;
+  let text = `${name}\n`;
+  if (user.lowTemperature === true) {
+    text += `Low Temperature: ${temperature} < ${user.minTemperature}\n`;
+  }
+  if (user.highTemperature === true) {
+    text += `High Temperature: ${temperature} > ${user.maxTemperature}\n`;
+  }
+  if (user.lowPressure === true) {
+    text += `Low Pressure: ${pressure} < ${user.minPressure}\n`;
+  }
+  if (user.highPressure === true) {
+    text += `High Pressure: ${pressure} > ${user.maxPressure}\n`;
+  }
+  if (user.lowHumidity === true) {
+    text += `Low Humidity: ${humidity} < ${user.minHumidity}\n`;
+  }
+  if (user.highHumidity === true) {
+    text += `High Humidity: ${humidity} > ${user.maxHumidity}\n`;
+  }
+  if (user.lowAltitude === true) {
+    text += `Low Altitude: ${altitude} < ${user.minAltitude}\n`;
+  }
+  if (user.highAltitude === true) {
+    text += `High Altitude: ${altitude} > ${user.maxAltitude}\n`;
+  }
+  return text;
+};
+
+const alarmNotificationsJob = async (key) => {
+  const { weatherStation, users } = await WeatherStation.getAlarmNotifications(key);
+  const usersCount = users.length;
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < usersCount; i++) {
+    const user = users[i];
+    const text = getAlarmNotificationText(weatherStation, user);
+    // eslint-disable-next-line no-console
+    console.log(`Email sent to ${user.email}`);
+    // eslint-disable-next-line no-await-in-loop
+    await mailer.sendMail({
+      to: user.email,
+      subject: `Weather Monitoring System | Alarm Notification | ${weatherStation.name}`,
+      text,
+    });
+  }
+  // eslint-disable-next-line no-console
+  console.log(`Alarm Notification emails sent: ${usersCount}`);
+};
+
 module.exports = {
   intervalNotificationsJob,
+  alarmNotificationsJob,
 };
