@@ -37,8 +37,8 @@ class WeatherStation {
     JOIN "WeatherStation" W ON W."id" = S."weatherStationId"
     JOIN "Person" P ON P."id" = S."personId" 
     WHERE W."enabledState" = true 
-      and P."intervalNotificationsEnabled" = true 
-      and "timeInterval" in (%L)
+      AND P."intervalNotificationsEnabled" = true AND P."arePreferencesSet" = true
+      AND "timeInterval" in (%L)
     ORDER BY "email", S."id";`, queryTimeIntervals);
     const { rows } = await db.query(query);
     const users = {};
