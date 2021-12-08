@@ -6,4 +6,4 @@ curl --location --request POST 'http://localhost:3000/weather-station/update' \
 --data-urlencode 'humidity=-2' \
 --data-urlencode 'altitude=2.5'
 
-curl --location --request POST 'https://ooad-sv-wms.herokuapp.com/weather-station/update' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'key=kxovumoysaslqalizjapnbkhvmhunrdd' --data-urlencode 'temperature=0.2' --data-urlencode 'pressure=0' --data-urlencode 'humidity=-2' --data-urlencode 'altitude=2.5'
+curl --location --request POST 'https://ooad-sv-wms.herokuapp.com/weather-station/update' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'key=kxovumoysaslqalizjapnbkhvmhunrdd' --data-urlencode 'temperature=20' --data-urlencode 'pressure=80000' --data-urlencode 'humidity=50' --data-urlencode 'altitude=1650'

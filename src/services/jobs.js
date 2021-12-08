@@ -39,28 +39,28 @@ const getAlarmNotificationText = (weatherStation, user) => {
   } = weatherStation;
   let text = `${name}\n`;
   if (user.lowTemperature === true) {
-    text += `Low Temperature: ${temperature} < ${user.minTemperature} °C\n`;
+    text += `Low Temperature: ${temperature} °C < ${user.minTemperature} °C\n`;
   }
   if (user.highTemperature === true) {
-    text += `High Temperature: ${temperature} > ${user.maxTemperature} °C\n`;
+    text += `High Temperature: ${temperature} °C > ${user.maxTemperature} °C\n`;
   }
   if (user.lowPressure === true) {
-    text += `Low Pressure: ${pressure} < ${user.minPressure} Pa\n`;
+    text += `Low Pressure: ${pressure} Pa < ${user.minPressure} Pa\n`;
   }
   if (user.highPressure === true) {
-    text += `High Pressure: ${pressure} > ${user.maxPressure} Pa\n`;
+    text += `High Pressure: ${pressure} Pa > ${user.maxPressure} Pa\n`;
   }
   if (user.lowHumidity === true) {
-    text += `Low Humidity: ${humidity} < ${user.minHumidity} %\n`;
+    text += `Low Humidity: ${humidity} % < ${user.minHumidity} %\n`;
   }
   if (user.highHumidity === true) {
-    text += `High Humidity: ${humidity} > ${user.maxHumidity} %\n`;
+    text += `High Humidity: ${humidity} % > ${user.maxHumidity} %\n`;
   }
   if (user.lowAltitude === true) {
-    text += `Low Altitude: ${altitude} < ${user.minAltitude} m\n`;
+    text += `Low Altitude: ${altitude} m < ${user.minAltitude} m\n`;
   }
   if (user.highAltitude === true) {
-    text += `High Altitude: ${altitude} > ${user.maxAltitude} m\n`;
+    text += `High Altitude: ${altitude} m > ${user.maxAltitude} m\n`;
   }
   return text;
 };
