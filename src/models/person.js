@@ -164,14 +164,14 @@ class Person {
     preferences.subscriptions = await Person.getSubscriptions(id);
     if (preferences.arePreferencesSet !== true) {
       preferences.subscriptions.forEach((e) => { e.enabled = true; });
-      preferences.minTemperature = 0.75;
-      preferences.maxTemperature = 1.75;
-      preferences.minPressure = 0.75;
-      preferences.maxPressure = 1.75;
-      preferences.minHumidity = 0.75;
-      preferences.maxHumidity = 1.75;
-      preferences.minAltitude = 0.75;
-      preferences.maxAltitude = 1.75;
+      preferences.minTemperature = 16;
+      preferences.maxTemperature = 35;
+      preferences.minPressure = 50000;
+      preferences.maxPressure = 150000;
+      preferences.minHumidity = 10;
+      preferences.maxHumidity = 65;
+      preferences.minAltitude = 1000;
+      preferences.maxAltitude = 2000;
     }
     return preferences;
   }
