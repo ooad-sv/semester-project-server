@@ -5,6 +5,8 @@
 1. Sagar Pathare
 2. Vimal Kakaraparthi
 
+## Hosting
+Deployed on heroku, here- [https://ooad-sv-wms.herokuapp.com/](https://ooad-sv-wms.herokuapp.com/)
 ## Files to check for the submission (main branch)
 1. [Project 7- Final Project Report.pdf](https://github.com/ooad-sv/semester-project-server/blob/main/extras/reports/Project%207-%20Final%20Project%20Report.pdf)
    * Full size class diagram- [annotated-class-diagram.png](https://github.com/ooad-sv/semester-project-server/blob/main/extras/reports/annotated-class-diagram.png)
