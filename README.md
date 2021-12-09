@@ -24,7 +24,7 @@
 * Clone the repository 
 * Run `npm i` in the root of the repository
 * Copy the `.example.env` to `.env` and replace the environment variables
-* Restore DB snapshot from [here](https://nodejs.org/)
+* Restore the [DB snapshot](https://github.com/ooad-sv/semester-project-server/blob/main/extras/db/db.sql)
 * Set `JWT_SECRET_KEY = 393acaebc13559b6440e9d0b5e38246d26bb9de9702f4c5d66eed0eefc75d2223`
 * Install nodemon globally if you haven't, using `npm i -g nodemon`
 * Start the development server with `npm run dev`
